@@ -244,7 +244,7 @@ class Ui_MainWindow(object):
         self.fs_dsb.setSizePolicy(sizePolicy)
         self.fs_dsb.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.fs_dsb.setMaximum(999.99)
-        self.fs_dsb.setProperty("value", 10.0)
+        self.fs_dsb.setProperty("value", 100.0)
         self.fs_dsb.setObjectName("fs_dsb")
         self.horizontalLayout_9.addWidget(self.fs_dsb)
         self.fs_cb = QtWidgets.QComboBox(self.TWidget)
