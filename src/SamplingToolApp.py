@@ -6,21 +6,31 @@ import numpy as np
 import scipy.signal as ss
 import scipy.fft as sf
 
+N = int(1e5)    # Cantidad de muestras en el tiempo
+
 class SamplingToolApp (QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
         super(SamplingToolApp, self).__init__(*args, **kwargs)
         self.setupUi(self)
-
+        
+        # Se podria hacer desde el designer
         self.f_cb.setCurrentIndex(1)    # Default en kHz, se puede hacer desde el designer
-        self.fs_cb.setCurrentIndex(1)    # Default en kHz, se puede hacer desde el designer
+        self.fs_cb.setCurrentIndex(1)    # Default en kHz
+        self.xin_plot.setChecked(True)
+        self.FAA_ON.setChecked(True)
+        self.SH_ON.setChecked(True)
+        self.LA_ON.setChecked(True)
+        self.xout_ON.setChecked(True)
+        self.xout_plot.setChecked(True)
 
         #TODO: Armar filtro anti alias
-        self.FAA = ss.TransferFunction([1],[1])
+        self.FAA = ss.TransferFunction([1], [1/(2*np.pi*50e3), 1])   # Trannsferencia filtro anti alias
+        self.FR = self.FAA
 
         self.update_b.clicked.connect(self.updatePlot)  # Update button
 
         self.axes = [ self.t_plot.axes, self.f_plot.axes ] 
-        self.axes[0].grid(); self.axes[1].grid()
+
         # Ejes predefinidos
 
     def updatePlot(self):
@@ -33,6 +43,7 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         self.axes[0].set_xlabel("$Tiempo\ [s]$")
         self.axes[1].set_xlabel("$Frecuencia\ [Hz]$")
         self.axes[0].legend(); self.axes[1].legend()  
+        # self.axes[1].set_xscale('log')
         self.t_plot.draw()
         self.f_plot.draw()
 
@@ -45,7 +56,7 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         fs = self.fs_dsb.value() * 1e3**(self.fs_cb.currentIndex())
         dc = self.DC_dsb.value() / 100
 
-        t = np.linspace(0, 10/f, int(1e5))     # Muestra 10 periodos, 1M muestras
+        t = np.linspace(0, 10/f, N)     # Muestra 10 periodos, 1M muestras
 
         sc = ss.square(2*np.pi*fs*t, duty=1-dc) < 0        # Control signal
 
@@ -87,13 +98,14 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
             self.axes[1].plot(freq, abs(spect), label="$LA$", color='C3')
         
         if (self.xout_ON.isChecked()):
-            t, signal,_  = ss.lsim((self.FAA.num, self.FAA.den), U=signal, T=t)  # Calculamos la Rta
+            t, signal,_  = ss.lsim((self.FR.num, self.FR.den), U=signal, T=t)  # Calculamos la Rta
         if (self.xout_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$X_{out}$", color='C4')
             freq, spect = self.calcfft(signal, t)
             self.axes[1].plot(freq, abs(spect), label="$X_{out}$", color='C4')
     
     
+    #TODO: Se buguea cuando dc cercano a 100%
     def sampleAndHold(self, signal, control):
         res = signal
         for i in range(len(res)):
@@ -103,8 +115,8 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         return res
 
     def calcfft(self, signal, t):
-        spect = sf.fftshift(sf.fft(signal)) / 1e5
+        spect = sf.fftshift(sf.fft(signal)) * 2/N
+        # spect = 2*(sf.fftshift(sf.fft(signal))/N)**2    # En potencia
         freq = sf.fftshift(sf.fftfreq(t.shape[-1], d=t[-1]/t.shape[-1]))
-        # print(t[-1]/t.shape[-1])
         return freq[len(freq)//2:], spect[len(spect)//2:]
     
