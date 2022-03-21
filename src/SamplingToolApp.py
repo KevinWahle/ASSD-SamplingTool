@@ -30,20 +30,22 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         self.update_b.clicked.connect(self.updatePlot)  # Update button
 
         self.axes = [ self.t_plot.axes, self.f_plot.axes ] 
-
+        self.axes[0].grid(which='both'); self.axes[1].grid(which='both')
+        self.axes[1].set_xscale('log')
+        
         # Ejes predefinidos
 
     def updatePlot(self):
         self.t_plot.clear()
         self.f_plot.clear()
         self.calcCurves()
-        self.axes[0].grid(); self.axes[1].grid()
-        self.axes[0].set_ylabel("$Salida\ [V]$")
-        self.axes[1].set_ylabel("$Tension\ [V]$")
+        self.axes[0].grid(which='both'); self.axes[1].grid(which='both')
+        self.axes[0].set_ylabel("$Tensión\ [V]$")
+        self.axes[1].set_ylabel("$Tensión\ [\hat{V}]$")
         self.axes[0].set_xlabel("$Tiempo\ [s]$")
         self.axes[1].set_xlabel("$Frecuencia\ [Hz]$")
         self.axes[0].legend(); self.axes[1].legend()  
-        # self.axes[1].set_xscale('log')
+        self.axes[1].set_xscale('log')
         self.t_plot.draw()
         self.f_plot.draw()
 
