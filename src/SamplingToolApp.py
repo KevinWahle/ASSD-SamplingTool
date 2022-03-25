@@ -6,7 +6,6 @@ import numpy as np
 import scipy.signal as ss
 import scipy.fft as sf
 
-N = int(1e5)    # Cantidad de muestras en el tiempo
 
 class SamplingToolApp (QMainWindow, Ui_MainWindow):
     def __init__(self, *args, **kwargs):
@@ -41,7 +40,8 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         self.calcCurves()
         self.axes[0].grid(which='both'); self.axes[1].grid(which='both')
         self.axes[0].set_ylabel("$Tensión\ [V]$")
-        self.axes[1].set_ylabel("$Tensión\ [\hat{V}]$")
+        self.axes[1].set_ylabel("$Potencia\ [dB]$")
+        # self.axes[1].set_ylabel("$Tensión\ [\hat{V}]$")
         self.axes[0].set_xlabel("$Tiempo\ [s]$")
         self.axes[1].set_xlabel("$Frecuencia\ [Hz]$")
         self.axes[0].legend(); self.axes[1].legend()  
@@ -57,6 +57,8 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
 
         fs = self.fs_dsb.value() * 1e3**(self.fs_cb.currentIndex())
         dc = self.DC_dsb.value() / 100
+
+        N = int(1e5)    # Cantidad de muestras en el tiempo
 
         t = np.linspace(0, 10/f, N)     # Muestra 10 periodos, 1M muestras
 
@@ -76,35 +78,35 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         if (self.xin_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$X_{in}$", color='C0')
             freq, spect = self.calcfft(signal, t)
-            self.axes[1].plot(freq, np.abs(spect), label="$X_{in}$", color='C0')
+            self.axes[1].plot(freq, spect, label="$X_{in}$", color='C0')
 
         if (self.FAA_ON.isChecked()):
             t, signal,_  = ss.lsim((self.FAA.num, self.FAA.den), U=signal, T=t)  # Calculamos la Rta
         if (self.FAA_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$FAA$", color='C1')
             freq, spect = self.calcfft(signal, t)
-            self.axes[1].plot(freq, np.abs(spect), label="$FAA$", color='C1')
+            self.axes[1].plot(freq, spect, label="$FAA$", color='C1')
         
         if (self.SH_ON.isChecked()):
             signal = self.sampleAndHold(signal, sc)
         if (self.SH_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$SH$", color='C2')
             freq, spect = self.calcfft(signal, t)
-            self.axes[1].plot(freq, abs(spect), label="$SH$", color='C3')
+            self.axes[1].plot(freq, spect, label="$SH$", color='C3')
 
         if (self.LA_ON.isChecked()):
             signal *= sc
         if (self.LA_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$LA$", color='C3')
             freq, spect = self.calcfft(signal, t)
-            self.axes[1].plot(freq, abs(spect), label="$LA$", color='C3')
+            self.axes[1].plot(freq, spect, label="$LA$", color='C3')
         
         if (self.xout_ON.isChecked()):
             t, signal,_  = ss.lsim((self.FR.num, self.FR.den), U=signal, T=t)  # Calculamos la Rta
         if (self.xout_plot.isChecked()):
             self.axes[0].plot(t, signal, label="$X_{out}$", color='C4')
             freq, spect = self.calcfft(signal, t)
-            self.axes[1].plot(freq, abs(spect), label="$X_{out}$", color='C4')
+            self.axes[1].plot(freq, spect, label="$X_{out}$", color='C4')
     
     
     #TODO: Se buguea cuando dc cercano a 100%
@@ -117,8 +119,22 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         return res
 
     def calcfft(self, signal, t):
-        spect = sf.fftshift(sf.fft(signal)) * 2/N
-        # spect = 2*(sf.fftshift(sf.fft(signal))/N)**2    # En potencia
-        freq = sf.fftshift(sf.fftfreq(t.shape[-1], d=t[-1]/t.shape[-1]))
-        return freq[len(freq)//2:], spect[len(spect)//2:]
+
+        # # Espectro original:
+        # spect = sf.fftshift(sf.fft(signal)) * 2/N
+        # # spect = 2*(sf.fftshift(sf.fft(signal))/N)**2    # En potencia
+        # freq = sf.fftshift(sf.fftfreq(t.shape[-1], d=t[-1]/t.shape[-1]))
+        # return freq[len(freq)//2:], spect[len(spect)//2:]
+
+        # Agregando N0 ceros:
+        N0 = 10*len(signal)
+        
+        Ns = int(len(signal) + N0)
+
+        # spect = sf.fft(signal, Ns) * 2/len(signal)        # En tension
+        spect = 2*abs(sf.fft(signal, Ns)/len(signal))**2    # En potencia
+        spect = 10*np.log10(spect)     # En dB
+        # spect = 10*np.log10(spect*1e3)     # En dBm
+        freq = sf.fftfreq(Ns, d=t[-1]/len(t))
+        return freq[:len(freq)//2], spect[:len(spect)//2]
     
