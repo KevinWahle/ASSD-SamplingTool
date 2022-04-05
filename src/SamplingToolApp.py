@@ -23,7 +23,7 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         self.xout_plot.setChecked(True)
 
         #TODO: Armar filtro anti alias
-        self.FAA = ss.TransferFunction([1], [1/(2*np.pi*50e3), 1])   # Trannsferencia filtro anti alias
+        self.FAA = ss.TransferFunction([2.6832e+50], [1.2089e+24, 3.2022e+29, 1.6322e+35, 2.6626e+40, 4.4854e+45, 2.6832e+50])   # Trannsferencia filtro anti alias
         self.FR = self.FAA
 
         self.update_b.clicked.connect(self.updatePlot)  # Update button
