@@ -1,0 +1,12 @@
+Board Information Report
+Filename     : C:\Fran\ITBA\ASSD\TPs\1 Muestreo\PCB Muestreo\PCB1.PcbDoc
+Date         : 2/4/2022
+Time         : 19:29:46
+Time Elapsed : 00:00:00
+
+Routing Information
+    Routing completion, 97,28%
+    Connections, 147
+    Connections routed, 143
+    Connections remaining, 4
+count : 4
