@@ -132,9 +132,13 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         Ns = int(len(signal) + N0)
 
         # spect = sf.fft(signal, Ns) * 2/len(signal)        # En tension
-        spect = 2*abs(sf.fft(signal, Ns)/len(signal))**2    # En potencia
+        spect = sf.fft(signal, Ns)
+        spect = 2*abs(spect/len(signal))**2    # En potencia
+        spect = spect[:len(spect)//2]
         spect = 10*np.log10(spect)     # En dB
+        
         # spect = 10*np.log10(spect*1e3)     # En dBm
         freq = sf.fftfreq(Ns, d=t[-1]/len(t))
-        return freq[:len(freq)//2], spect[:len(spect)//2]
+        freq = freq[:len(freq)//2]
+        return freq, spect
     
