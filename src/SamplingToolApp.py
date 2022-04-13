@@ -67,7 +67,12 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         if (self.type_cb.currentIndex() == 0):
             xin = A*np.cos(2*np.pi*f*t + theta)
         elif (self.type_cb.currentIndex() == 1):
-            xin = A*np.sin(2*np.pi*f/5*t + theta)
+
+            
+            t = np.linspace(0, 75/f, N)     # Muestra 10 periodos, 1M muestras
+            t2 = t[t<15/(2*f)]
+            xin = A*np.sin(2*np.pi*f/5*t2 + theta)
+            xin = np.tile(xin, 10)[:len(t)]
         elif (self.type_cb.currentIndex() == 2):
             xin = A*ss.sawtooth(2*np.pi*f*t + theta, width=0.5)
 
