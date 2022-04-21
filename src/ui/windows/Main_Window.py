@@ -594,8 +594,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "SamplingTool"))
         self.input_l.setText(_translate("MainWindow", "INPUT"))
-        self.type_cb.setItemText(0, _translate("MainWindow", "Vmax⋅Cos (2⋅𝜋⋅f⋅t)"))
-        self.type_cb.setItemText(1, _translate("MainWindow", "Vmax⋅Sin (2⋅𝜋⋅ f/5⋅t)"))
+        self.type_cb.setItemText(0, _translate("MainWindow", "Vmax⋅Cos (2⋅𝜋⋅f⋅t + θ)"))
+        self.type_cb.setItemText(1, _translate("MainWindow", "Vmax⋅Sin (2⋅𝜋⋅ f/5⋅t + θ)"))
         self.type_cb.setItemText(2, _translate("MainWindow", "Vmax⋅[Λ (t⋅f + 1) - Λ (t⋅f -1)]"))
         self.vmax_l.setText(_translate("MainWindow", "Vmax"))
         self.vmax_cb.setItemText(0, _translate("MainWindow", "V"))
@@ -621,7 +621,7 @@ class Ui_MainWindow(object):
         self.xin_l.setText(_translate("MainWindow", "Xin"))
         self.FAA_l.setText(_translate("MainWindow", "FAA"))
         self.SH_l.setText(_translate("MainWindow", "S&H"))
-        self.LA_l.setText(_translate("MainWindow", "LA"))
+        self.LA_l.setText(_translate("MainWindow", "LLAVE"))
         self.xout_l.setText(_translate("MainWindow", "FR/Xout"))
         self.update_b.setText(_translate("MainWindow", "Update"))
 from src.ui.widgets.PlotWidget import PlotWidget

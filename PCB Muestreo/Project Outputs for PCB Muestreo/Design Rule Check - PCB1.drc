@@ -1,15 +1,13 @@
 Protel Design System Design Rule Check
-PCB File : C:\Fran\ITBA\ASSD\TPs\1 Muestreo\PCB Muestreo\PCB1.PcbDoc
-Date     : 2/4/2022
-Time     : 19:31:15
+PCB File : C:\Fran\ITBA\ASSD\TPs\1 Muestreo\ASSD-TP1\PCB Muestreo\PCB1.PcbDoc
+Date     : 13/4/2022
+Time     : 14:45:36
 
 Processing Rule : Clearance Constraint (Gap=0.7mm) (All),(All)
    Violation between Clearance Constraint: (0.625mm < 0.7mm) Between Pad C58-1(47.879mm,5.08mm) on Multi-Layer And Pad U5-7(50.038mm,5.207mm) on Multi-Layer 
    Violation between Clearance Constraint: (Collision < 0.7mm) Between Pad C58-1(47.879mm,5.08mm) on Multi-Layer And Track (47.879mm,4.572mm)(48.387mm,5.08mm) on Bottom Layer 
    Violation between Clearance Constraint: (Collision < 0.7mm) Between Pad C58-1(47.879mm,5.08mm) on Multi-Layer And Track (48.387mm,5.08mm)(50.165mm,5.08mm) on Bottom Layer 
-   Violation between Clearance Constraint: (0.605mm < 0.7mm) Between Pad U7-16(84.013mm,51.816mm) on Multi-Layer And Track (83.312mm,54.61mm)(85.836mm,52.086mm) on Top Layer 
-   Violation between Clearance Constraint: (0.336mm < 0.7mm) Between Track (4.19mm,70.788mm)(15.191mm,70.788mm) on Bottom Layer And Via (13.081mm,72.009mm) from Top Layer to Bottom Layer 
-Rule Violations :5
+Rule Violations :3
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
    Violation between Short-Circuit Constraint: Between Pad C58-1(47.879mm,5.08mm) on Multi-Layer And Track (47.879mm,4.572mm)(48.387mm,5.08mm) on Bottom Layer Location : [X = 73.533mm][Y = 30.226mm]
@@ -19,7 +17,7 @@ Rule Violations :3
 
 Processing Rule : Un-Routed Net Constraint ( (All) )
    Violation between Un-Routed Net Constraint: Net OutFR Between Pad J10-1(15.494mm,64.643mm) on Multi-Layer And Pad C12-2(43.18mm,51.689mm) on Multi-Layer 
-   Violation between Un-Routed Net Constraint: Net VCC Between Track (37.133mm,6.154mm)(37.133mm,7.698mm) on Bottom Layer And Pad C58-1(47.879mm,5.08mm) on Multi-Layer 
+   Violation between Un-Routed Net Constraint: Net VCC Between Track (35.433mm,9.398mm)(37.133mm,7.698mm) on Bottom Layer And Pad C58-1(47.879mm,5.08mm) on Multi-Layer 
    Violation between Un-Routed Net Constraint: Net NetR22_2 Between Track (67.879mm,6.731mm)(70.452mm,6.731mm) on Bottom Layer And Pad U6-8(71.468mm,6.731mm) on Multi-Layer 
    Violation between Un-Routed Net Constraint: Net VCC Between Via (48.387mm,52.197mm) from Top Layer to Bottom Layer And Via (67.056mm,52.578mm) from Top Layer to Bottom Layer 
 Rule Violations :4
@@ -34,9 +32,7 @@ Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (
 Rule Violations :0
 
 Processing Rule : Hole Size Constraint (Min=0.025mm) (Max=2.54mm) (All)
-   Violation between Hole Size Constraint: (3.5mm > 2.54mm) Pad SUJECION 1-1(325.628mm,6.731mm) on Multi-Layer Actual Hole Size = 3.5mm
-   Violation between Hole Size Constraint: (3.5mm > 2.54mm) Pad SUJECION 2-1(206.121mm,6.731mm) on Multi-Layer Actual Hole Size = 3.5mm
-Rule Violations :2
+Rule Violations :0
 
 Processing Rule : Hole To Hole Clearance (Gap=0.254mm) (All),(All)
 Rule Violations :0
@@ -207,6 +203,6 @@ Processing Rule : Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (Al
 Rule Violations :0
 
 
-Violations Detected : 164
+Violations Detected : 160
 Waived Violations : 0
-Time Elapsed        : 00:00:01
+Time Elapsed        : 00:00:02

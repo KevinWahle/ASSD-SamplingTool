@@ -134,16 +134,16 @@ class SamplingToolApp (QMainWindow, Ui_MainWindow):
         # Agregando N0 ceros:
         N0 = 10*len(signal)
         
-        Ns = int(len(signal) + N0)
+        Ns = int(len(signal) + N0) # Agregamos 0s para incrementar la cantidad de bines
 
         # spect = sf.fft(signal, Ns) * 2/len(signal)        # En tension
         spect = sf.fft(signal, Ns)
         spect = 2*abs(spect/len(signal))**2    # En potencia
-        spect = spect[:len(spect)//2]
+        spect = spect[:len(spect)//2]   # Me quedo con los armónicos de frec positiva
         spect = 10*np.log10(spect)     # En dB
         
         # spect = 10*np.log10(spect*1e3)     # En dBm
         freq = sf.fftfreq(Ns, d=t[-1]/len(t))
-        freq = freq[:len(freq)//2]
+        freq = freq[:len(freq)//2]  # Me quedo con los armónicos de frec positiva
         return freq, spect
     
